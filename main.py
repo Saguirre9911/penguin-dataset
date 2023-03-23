@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from model.model_fcn import predict_fcn
+import numpy as np
 
 
 class Features(BaseModel):
@@ -20,4 +22,6 @@ async def root():
 
 @app.post("/predict/")
 async def predict_species(features: Features):
-    return features
+    species=[]
+    species=predict_fcn([features.culmen_length_mm,features.culmen_depth_mm,features.flipper_length_mm,features.body_mass_g]) # por qué no puedo enviar solo features? ¿cómo lo envío?
+    return {"Your result was":species}
